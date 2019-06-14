@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>微信个人主页</title>
+</head>
+<body>
+        <div>个人信息</div>
+        <ul>
+            {% for item in user_info.ContactList %}
+            <li>{{ item.NickName }}</li>
+            {% endfor %}
+        </ul>
+        <a href="/contact-list.html">查看更多联系人</a>
+        <div>公众号信息</div>
+            {% for item in user_info.MPSubscribeMsgList %}
+               <h3>{{ item.NickName }}</h3>
+                {% for msg in item.MPArticleList %}
+                  <div style="color: khaki">
+                  <a href="{{ msg.Url }}">     {{ msg.Title }}</a>
+                  </div>
+                {% endfor %}
+            {% endfor %}
+</body>
+</html>

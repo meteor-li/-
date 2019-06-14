@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block main %}
+    <form action="/contact/" method="POST">
+        {% csrf_token %}
+        <input type="text" name="user" placeholder="个人邮箱"/><br/>
+        <input type="submit"  value="提交"/>
+    </form>
+    {% if pg %}
+        <script>
+            window.alert('邮件已发送,请进入邮箱查看联系方式!')
+        </script>
+    {% endif %}
+{% endblock main %}

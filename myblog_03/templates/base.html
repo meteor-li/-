@@ -1,0 +1,140 @@
+{% load static from staticfiles %}
+{% load blog_tags %}
+<!DOCTYPE html>
+<html>
+<!-- 引入css/js样式 -->
+<head>
+    <title>Black &amp; White</title>
+
+    <!-- meta -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="wid">
+
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="{% static 'blog/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'blog/css/pace.css' %}">
+    <link rel="stylesheet" href="{% static 'blog/css/custom.css' %}">
+
+    <!-- js -->
+    <script src="{% static 'blog/js/jquery-2.1.3.min.js' %}"></script>
+    <script src="{% static 'blog/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'blog/js/pace.min.js' %}"></script>
+    <script src="{% static 'blog/js/modernizr.custom.js' %}"></script>
+</head>
+
+<body>
+<!-- 头部标签设置-->
+<div class="container">
+    <header id="site-header">
+        <div class="row">
+            <div class="col-md-4 col-sm-5 col-xs-8">
+                <div class="logo">
+                    <h1><a href="{% url 'blog:index' %}"><b>Black</b> &amp; White</a></h1>
+                </div>
+            </div><!-- col-md-4 -->
+            <div class="col-md-8 col-sm-7 col-xs-4">
+                <nav class="main-nav" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" id="trigger-overlay" class="navbar-toggle">
+                            <span class="ion-navicon"></span>
+                        </button>
+                    </div>
+
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="cl-effect-11"><a href="/" data-hover="首页">首页</a></li>
+                            <li class="cl-effect-11"><a href="/contact" data-hover="联系">联系</a></li>
+                            <li class="cl-effect-11"><a href="/Login.html" data-hover="小程序">小程序</a></li>
+                            <li class="cl-effect-11"><a href="/admin" data-hover="登录">登录</a></li>
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+                </nav>
+                <div id="header-search-box">
+                    <a id="search-menu" href="#"><span id="search-icon" class="ion-ios-search-strong"></span></a>
+                    <div id="search-form" class="search-form">
+                        <form role="search" method="get" id="searchform" action="{% url 'blog:search' %}">
+                          <input type="search" name="q" placeholder="搜索" required>
+                          <button type="submit"><span class="ion-ios-search-strong"></span></button>
+                        </form>
+                    </div>
+                </div>
+            </div><!-- col-md-8 -->
+        </div>
+    </header>
+</div>
+<!-- 内容标签设置-->
+<div class="content-body">
+    <div class="container">
+        <div class="row">
+           <main class="col-md-8">
+                {% block main %}
+                {% endblock main %}
+            </main>
+            <aside class="col-md-4">
+                <!-- 最近文章-->
+                <div class="widget widget-recent-posts">
+                <h3 class="widget-title">最新文章</h3>
+                {% get_recent_posts as recent_post_list %}
+                      <ul>
+                        {% for post in recent_post_list %}
+                        <li>
+                          <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                        </li>
+                        {% empty %}
+                        暂无文章！
+                        {% endfor %}
+                      </ul>
+               </div>
+                <!-- 归档-->
+                <div class="widget widget-archives">
+                     <h3 class="widget-title">归档</h3>
+                        {% archives as date_list %}
+                      <ul>
+                        {% for date in date_list %}
+                        <li>
+                           <a href="{% url 'blog:archives' date.year date.month %}">
+                               {{ date.year }} 年 {{ date.month }} 月</a>
+                        </li>
+                        {% empty %}
+                        暂无归档！
+                        {% endfor %}
+                      </ul>
+                </div>
+                <!-- 分类-->
+                <div class="widget widget-category">
+                    <h3 class="widget-title">分类</h3>
+                         {% get_categories as category_list %}
+                          <ul>
+                            {% for category in category_list %}
+                            <li>
+                                <a href="{% url 'blog:category' category.pk %}">{{ category.name }}
+                                  <span class="post-count">({{ category.num_posts }})</span>
+                                </a>
+                            </li>
+                            {% empty %}
+                            暂无分类！
+                            {% endfor %}
+                          </ul>
+                </div>
+              {% block toc %}
+              {% endblock toc %}
+            </aside>
+        </div>
+    </div>
+</div>
+<!-- 底部标签设置-->
+<footer id="site-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <p class="copyright">Copyright ©<a href=""target="_blank" >2018-2020</a>
+                    <a href="http://www.miitbeian.gov.cn" title="ICP主体备案号" target="_blank">豫ICP备17042285号</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="{% static 'blog/js/script.js' %}"></script>
+</body>
+</html>
